@@ -21,6 +21,7 @@ const _colWidths = {
   'LongList': 200.0,
   'DoubleList': 200.0,
   'StringList': 200.0,
+  'ByteList': 200.0,
 };
 
 class CollectionTable extends StatefulWidget {
@@ -184,27 +185,31 @@ class _CollectionTableState extends State<CollectionTable> {
       radius: BorderRadius.circular(15),
       onTap: () {},
       child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (var property in collection.properties)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-              child: SizedBox(
-                width: _colWidths[property.type]!,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      object[property.name].toString(),
-                      style: TextStyle(color: Colors.grey[500]),
-                    ),
-                  ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: collection.properties.map(
+            (e) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                child: SizedBox(
+                  width: _colWidths[e.type]!,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        object[e.name].toString(),
+                        maxLines: 10,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.grey[300]),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-        ],
-      ),
+              );
+            },
+          ).toList()),
     );
   }
 }
